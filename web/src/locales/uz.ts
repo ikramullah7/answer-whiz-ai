@@ -1649,7 +1649,7 @@ export default {
       sitemapRestrictPdfToDomainTip:
         'Faqat sitemap bilan bir xil domenda joylashgan PDF havolalari kuzatiladi.',
       sitemapUserAgentTip:
-        'Har bir so‘rov bilan yuboriladigan User-Agent sarlavhasi. RAGFlow-SitemapConnector/1.0 ishlatish uchun bo‘sh qoldiring.',
+        'Har bir so‘rov bilan yuboriladigan User-Agent sarlavhasi. AnswerWhizAI-SitemapConnector/1.0 ishlatish uchun bo‘sh qoldiring.',
       sitemapBatchSizeTip:
         'Har bir partiyada olinib AnswerWhizAI’ga yuboriladigan sahifalar soni.',
       azure_devopsDescription:

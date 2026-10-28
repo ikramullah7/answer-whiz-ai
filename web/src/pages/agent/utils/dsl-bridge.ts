@@ -1,6 +1,6 @@
 // DSL bridge — single wire shape for the agent canvas.
 //
-// The RAGFlow agent DSL has exactly one canonical wire shape, used
+// The agent DSL has exactly one canonical wire shape, used
 // for every operation (PUT/GET/create/export/import):
 //
 //   {

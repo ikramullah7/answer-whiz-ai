@@ -96,7 +96,7 @@ const RootProvider = ({ children }: React.PropsWithChildren) => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider
           defaultTheme={ThemeEnum.Dark}
-          storageKey="ragflow-ui-theme"
+          storageKey="answerwhizai-ui-theme"
         >
           <Root>{children}</Root>
         </ThemeProvider>

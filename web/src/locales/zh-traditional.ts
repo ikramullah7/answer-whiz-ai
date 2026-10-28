@@ -312,7 +312,7 @@ export default {
         簡歷有多種格式，就像一個人的個性一樣，但我們經常必須將它們組織成結構化數據，以便於搜索。
         </p><p>
         我們不是將簡歷分塊，而是將簡歷解析為結構化數據。作為HR，你可以扔掉所有的簡歷，
-        您只需與<i>'ragflow'</i>交談即可列出所有符合資格的候選人。
+        您只需與<i>'AnswerWhizAI'</i>交談即可列出所有符合資格的候選人。
         </p>
           `,
       table: `支持<p><b>XLSX</b>和<b>csv/txt</b>格式文件。</p><p>以下是一些提示： <ul> <li>对于Csv或Txt文件，列之间的分隔符为 <em><b>tab</b></em>。</li> <li>第一行必须是列标题。</li> <li>列标题必须是有意义的术语，以便我们的大語言模型能够理解。列举一些同义词时最好使用斜杠<i>'/'</i>来分隔，甚至更好使用方括号枚举值，例如 <i>“性別/性別（男性，女性）”</i>.<p>以下是标题的一些示例：<ol> <li>供应商/供货商<b>'tab'</b>顏色（黃色、紅色、棕色）<b>'tab'</b>性別（男、女）<b>'tab'</B>尺码（m、l、xl、xxl）</li> <li>姓名/名字<b>'tab'</b>電話/手機/微信<b>'tab'</b>最高学历（高中，职高，硕士，本科，博士，初中，中技，中专，专科，专升本，mpa，mba，emba）</li> </ol> </p> </li> <li>表中的每一行都将被视为一个块。</li> </ul>`,
@@ -835,7 +835,7 @@ export default {
       sitemapFollowPdfLinksTip: '同時索引已擷取 HTML 頁面中連結的 PDF 檔案。',
       sitemapRestrictPdfToDomainTip: '僅跟隨與 sitemap 同網域下的 PDF 連結。',
       sitemapUserAgentTip:
-        '每次請求送出的 User-Agent 標頭。留空則使用 RAGFlow-SitemapConnector/1.0。',
+        '每次請求送出的 User-Agent 標頭。留空則使用 AnswerWhizAI-SitemapConnector/1.0。',
       sitemapBatchSizeTip: '每批擷取並送到 AnswerWhizAI 的頁面數量。',
       azure_devopsDescription: '連接 Azure DevOps 以同步儲存庫檔案和拉取請求。',
       bitbucketDescription: '連接 Bitbucket，同步 PR 內容。',

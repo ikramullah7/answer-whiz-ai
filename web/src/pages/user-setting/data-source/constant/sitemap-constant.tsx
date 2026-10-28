@@ -57,7 +57,8 @@ export const sitemapConstant = (t: TFunction) => [
     name: 'config.user_agent',
     type: FormFieldType.Text,
     required: false,
-    placeholder: 'RAGFlow-SitemapConnector/1.0',
+    defaultValue: 'AnswerWhizAI-SitemapConnector/1.0',
+    placeholder: 'AnswerWhizAI-SitemapConnector/1.0',
     tooltip: t('setting.sitemapUserAgentTip'),
   },
   {

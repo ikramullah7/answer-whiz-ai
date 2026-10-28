@@ -389,16 +389,15 @@ export default function Agent() {
                 <Settings />
                 {t('flow.setting')}
               </AgentDropdownMenuItem>
-              {isPipeline ||
-                (location.hostname !== 'cloud.ragflow.io' && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <AgentDropdownMenuItem onClick={handleEmbedClick}>
-                      <ScreenShare />
-                      {t('common.embedIntoSite')}
-                    </AgentDropdownMenuItem>
-                  </>
-                ))}
+              {!isPipeline && (
+                <>
+                  <DropdownMenuSeparator />
+                  <AgentDropdownMenuItem onClick={handleEmbedClick}>
+                    <ScreenShare />
+                    {t('common.embedIntoSite')}
+                  </AgentDropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

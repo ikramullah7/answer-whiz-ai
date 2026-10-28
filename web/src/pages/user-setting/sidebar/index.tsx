@@ -18,7 +18,6 @@ import { IconFontFill } from '@/components/icon-font';
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
 import ThemeSwitch from '@/components/theme-switch';
 import { Button } from '@/components/ui/button';
-import { Domain } from '@/constants/common';
 import { useLogout } from '@/hooks/use-login-request';
 import {
   useFetchSystemVersion,
@@ -85,9 +84,7 @@ export function SideBar() {
   const { version, fetchSystemVersion } = useFetchSystemVersion();
   const { t } = useTranslation();
   useEffect(() => {
-    if (location.host !== Domain) {
-      fetchSystemVersion();
-    }
+    fetchSystemVersion();
   }, [fetchSystemVersion]);
   const { logout } = useLogout();
 
