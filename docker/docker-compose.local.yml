@@ -1,0 +1,39 @@
+# Preserve the existing docker_* data volumes with the explicit project name.
+name: docker
+# Local Colima trial: leave memory for RAGFlow, its dependencies, and the VM.
+# Use with: docker compose -p docker --env-file docker/.env --env-file docker/.env.local -f docker/docker-compose.yml -f docker/docker-compose.local.yml <command>
+services:
+  es01:
+    env_file: .env.local
+    mem_limit: 3g
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports: !override
+      - "127.0.0.1:${ES_PORT}:9200"
+  mysql:
+    env_file: .env.local
+    ports: !override
+      - "127.0.0.1:${EXPOSE_MYSQL_PORT}:3306"
+  minio:
+    env_file: .env.local
+    ports: !override
+      - "127.0.0.1:${MINIO_PORT}:9000"
+      - "127.0.0.1:${MINIO_CONSOLE_PORT}:9001"
+  kvrocks:
+    env_file: .env.local
+    ports: !override
+      - "127.0.0.1:${KVROCKS_PORT:-6379}:6379"
+  nats:
+    env_file: .env.local
+    ports: !override
+      - "127.0.0.1:${EXPOSE_NATS_PORT:-4222}:4222"
+      - "127.0.0.1:${EXPOSE_NATS_MONITORING_PORT:-8222}:8222"
+  ragflow-cpu:
+    env_file: .env.local
+    volumes:
+      - ../web/dist:/ragflow/web/dist:ro
+    ports: !override
+      - "127.0.0.1:${SVR_WEB_HTTP_PORT}:80"
+      - "127.0.0.1:${SVR_WEB_HTTPS_PORT}:443"
+      - "127.0.0.1:${SVR_HTTP_PORT}:9380"
+      - "127.0.0.1:${ADMIN_SVR_HTTP_PORT}:9381"

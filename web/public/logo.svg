@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">AnswerWhizAI</title>
+  <defs><linearGradient id="brand" x2="1" y2="1"><stop stop-color="#40ebe3"/><stop offset="1" stop-color="#4a51ff"/></linearGradient></defs>
+  <rect width="64" height="64" rx="18" fill="url(#brand)"/>
+  <path d="m12 44 10-26 10 26m-16-9h12m2-17 5 26 6-17 6 17 5-26" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
