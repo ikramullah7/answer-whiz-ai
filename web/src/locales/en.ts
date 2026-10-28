@@ -1732,7 +1732,7 @@ Example: Virtual Hosted Style`,
       sitemapRestrictPdfToDomainTip:
         'Only follow PDF links hosted on the same domain as the sitemap.',
       sitemapUserAgentTip:
-        'User-Agent header sent with every request. Leave empty to use RAGFlow-SitemapConnector/1.0.',
+        'User-Agent header sent with every request. Leave empty to use AnswerWhizAI-SitemapConnector/1.0.',
       sitemapBatchSizeTip:
         'Number of pages fetched and sent to AnswerWhizAI per batch.',
       azure_devopsDescription:

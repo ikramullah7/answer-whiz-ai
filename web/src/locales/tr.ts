@@ -1718,7 +1718,7 @@ Bu otomatik etiketleme özelliği, mevcut datasete alanına özgü bilgi katman�
       sitemapRestrictPdfToDomainTip:
         'Yalnızca site haritasıyla aynı alan adında barındırılan PDF bağlantılarını izleyin.',
       sitemapUserAgentTip:
-        'Her istekle gönderilen User-Agent başlığı. RAGFlow-SitemapConnector/1.0 kullanmak için boş bırakın.',
+        'Her istekle gönderilen User-Agent başlığı. AnswerWhizAI-SitemapConnector/1.0 kullanmak için boş bırakın.',
       sitemapBatchSizeTip:
         "Toplu işlem başına alınan ve AnswerWhizAI'a gönderilen sayfa sayısı.",
       azure_devopsDescription:

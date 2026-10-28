@@ -1760,7 +1760,7 @@ Nümunə: Virtual host üslubu`,
       sitemapRestrictPdfToDomainTip:
         'Yalnız sayt xəritəsi ilə eyni domendə yerləşən PDF keçidlərini izləyin.',
       sitemapUserAgentTip:
-        'Hər sorğu ilə göndərilən User-Agent başlığı. RAGFlow-SitemapConnector/1.0 istifadə etmək üçün boş buraxın.',
+        'Hər sorğu ilə göndərilən User-Agent başlığı. AnswerWhizAI-SitemapConnector/1.0 istifadə etmək üçün boş buraxın.',
       sitemapBatchSizeTip:
         'Hər paketdə alınan və AnswerWhizAI-a göndərilən səhifələrin sayı.',
       azure_devopsDescription:

@@ -89,7 +89,7 @@ export const AvailableModels: FC<{
         : searchedModels.filter((model) =>
             model.model_types.some((type) => type === selectedTag),
           );
-    // AIMLAPI first (then RAGFlow's curated order) in the available list
+    // AIMLAPI first (then the curated model order) in the available list
     return sortLLmFactoryListBySpecifiedOrder(
       filtered as any,
     ) as unknown as typeof filtered;

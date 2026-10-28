@@ -1350,7 +1350,7 @@ NER：使用 spaCy NER 和基于规则的关键词提取来抽取 Entities 和 R
       sitemapFollowPdfLinksTip: '同时索引已抓取 HTML 页面中链接的 PDF 文件。',
       sitemapRestrictPdfToDomainTip: '仅跟随与 sitemap 同域名下的 PDF 链接。',
       sitemapUserAgentTip:
-        '每次请求发送的 User-Agent 请求头。留空则使用 RAGFlow-SitemapConnector/1.0。',
+        '每次请求发送的 User-Agent 请求头。留空则使用 AnswerWhizAI-SitemapConnector/1.0。',
       sitemapBatchSizeTip: '每批抓取并发送到 AnswerWhizAI 的页面数量。',
       azure_devopsDescription: '连接 Azure DevOps 以同步仓库文件和拉取请求。',
       bitbucketDescription: '连接 Bitbucket，同步 PR 内容。',

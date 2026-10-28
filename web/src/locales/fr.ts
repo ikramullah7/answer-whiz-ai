@@ -1525,7 +1525,7 @@ Exemple : Virtual Hosted Style`,
       sitemapRestrictPdfToDomainTip:
         'Ne suivre que les liens PDF hébergés sur le même domaine que le sitemap.',
       sitemapUserAgentTip:
-        'En-tête User-Agent envoyé avec chaque requête. Laissez vide pour utiliser RAGFlow-SitemapConnector/1.0.',
+        'En-tête User-Agent envoyé avec chaque requête. Laissez vide pour utiliser AnswerWhizAI-SitemapConnector/1.0.',
       sitemapBatchSizeTip:
         'Nombre de pages récupérées et envoyées à AnswerWhizAI par lot.',
       azure_devopsDescription:
