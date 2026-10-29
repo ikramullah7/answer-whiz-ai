@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title id="title">AnswerWhizAI</title>
-  <defs><linearGradient id="brand" x2="1" y2="1"><stop stop-color="#40ebe3"/><stop offset="1" stop-color="#4a51ff"/></linearGradient></defs>
-  <rect width="64" height="64" rx="18" fill="url(#brand)"/>
-  <path d="m12 44 10-26 10 26m-16-9h12m2-17 5 26 6-17 6 17 5-26" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title"><title id="title">SourcePi AI</title><rect width="64" height="64" rx="10" fill="#104f3d"/><g fill="#fff"><rect x="28" y="12" width="7" height="7"/><rect x="20" y="20" width="7" height="7"/><rect x="28" y="20" width="7" height="7"/><rect x="36" y="20" width="7" height="7"/><rect x="12" y="28" width="7" height="7"/><rect x="20" y="28" width="7" height="7"/><rect x="36" y="28" width="7" height="7"/><rect x="44" y="28" width="7" height="7"/><rect x="20" y="36" width="7" height="7"/><rect x="28" y="36" width="7" height="7"/><rect x="36" y="36" width="7" height="7"/><rect x="28" y="44" width="7" height="7"/></g></svg>

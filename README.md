@@ -1,6 +1,6 @@
-# AnswerWhizAI
+# SourcePi AI
 
-AnswerWhizAI helps you turn documents into searchable knowledge and get AI-generated answers with source citations. It includes a React frontend and a Go backend, with native ARM64 support for local deployment on Apple Silicon using Colima.
+SourcePi AI helps you turn documents into searchable knowledge and get AI-generated answers with source citations. It includes a React frontend and a Go backend, with native ARM64 support for local deployment on Apple Silicon using Colima.
 
 - [Local setup](LOCAL_SETUP.md): installation, configuration, and deployment safeguards.
 - [Frontend branding](web/BRANDING.md): building and packaging the interface.
