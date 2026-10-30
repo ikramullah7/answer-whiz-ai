@@ -1,0 +1,233 @@
+name: SourcePi AI CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  workflows:
+    name: Workflow validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate Actions expressions and embedded shell scripts
+        run: |
+          shellcheck .github/scripts/*.sh
+          bash .github/scripts/check-workflows.sh
+
+  frontend:
+    name: Frontend / ${{ matrix.check }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [format, lint, types, tests, build]
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Check formatting
+        if: matrix.check == 'format'
+        run: npm run format:check
+      - name: Lint
+        if: matrix.check == 'lint'
+        run: npm run lint
+      - name: Type-check
+        if: matrix.check == 'types'
+        run: npm run type-check
+      - name: Run all frontend tests with coverage
+        if: matrix.check == 'tests'
+        run: npm test -- --ci --runInBand --coverageReporters=text --coverageReporters=lcov
+      - name: Build production frontend
+        if: matrix.check == 'build'
+        run: npm run build
+      - name: Upload coverage
+        if: always() && matrix.check == 'tests'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: frontend-coverage
+          path: web/coverage/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Upload production frontend
+        if: matrix.check == 'build'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: frontend-dist
+          path: web/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  go-format:
+    name: Go formatting and native version consistency
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Check all tracked Go files
+        run: |
+          mapfile -d '' files < <(git ls-files -z -- '*.go')
+          unformatted=$(gofmt -l "${files[@]}")
+          if [[ -n "$unformatted" ]]; then
+            printf 'Go files requiring gofmt:\n%s\n' "$unformatted"
+            exit 1
+          fi
+      - name: Verify ONNX Runtime version declarations
+        run: bash build.sh --check-ort-version
+
+  go-backend:
+    name: Go build, unit tests and startup checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CC: clang-20
+      CXX: clang++-20
+      GOPROXY: https://proxy.golang.org,direct
+      GOPRIVATE: github.com/infiniflow/onnxruntime_go
+      GOFLAGS: -p=2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install native build toolchain
+        run: bash .github/scripts/setup-go-native.sh
+      - name: Verify selected compiler, linker and CMake
+        run: |
+          clang++ --version
+          ld.lld --version | grep -E '^LLD 20\.'
+          cmake --version
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      # The existing downloader prepares native Go libraries and runtime assets.
+      # No Python application, worker or test suite runs in this workflow.
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: latest-known
+          enable-cache: false
+      - name: Restore native dependencies and runtime assets
+        id: native-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/ragflow-native-libs
+            ragflow_deps/cl100k_base.tiktoken
+            ragflow_deps/huggingface.co
+            internal/rag/res/deepdoc
+          key: native-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('go.mod', 'build.sh', 'tools/scripts/download_dev_deps.py', 'internal/common/environments.go') }}
+      - name: Prepare pinned native dependencies and runtime assets
+        if: steps.native-cache.outputs.cache-hit != 'true'
+        run: uv run --python 3.12 tools/scripts/download_dev_deps.py
+      - name: Cache prepared dependencies
+        if: steps.native-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/ragflow-native-libs
+            ragflow_deps/cl100k_base.tiktoken
+            ragflow_deps/huggingface.co
+            internal/rag/res/deepdoc
+          key: ${{ steps.native-cache.outputs.cache-primary-key }}
+      - name: Download and verify Go modules
+        run: |
+          go mod download
+          go mod verify
+      - name: Build native tokenizer and Go binaries
+        run: bash build.sh --all
+      - name: Smoke-test every server mode and CLI startup
+        run: |
+          for mode in api admin ingestor syncer; do
+            timeout 30s bin/ragflow_server "--$mode" --help
+          done
+          timeout 30s bin/ragflow-cli --help
+      - name: Run Go unit tests, race detector and vet checks
+        run: |
+          mkdir -p coverage
+          bash build.sh --test -race -vet=all -timeout 10m -covermode=atomic -coverprofile=coverage/go.out ./...
+      - name: Upload Go coverage
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: go-coverage
+          path: coverage/go.out
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Package Linux binaries
+        # Preserve executable permissions inside the downloaded artifact.
+        run: tar -czf sourcepi-linux-amd64.tar.gz -C bin ragflow_server ragflow-cli
+      - name: Upload Linux binary archive
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: linux-amd64-binaries
+          path: sourcepi-linux-amd64.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  compose:
+    name: Docker Compose configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate local deployment with example configuration
+        run: |
+          docker compose \
+            --env-file docker/.env.example \
+            --env-file docker/.env.local.example \
+            -f docker/docker-compose.yml \
+            -f docker/docker-compose.local.yml \
+            config --no-env-resolution --quiet
+
+  ci:
+    name: CI
+    if: always()
+    needs: [workflows, frontend, go-format, go-backend, compose]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      WORKFLOWS_RESULT: ${{ needs.workflows.result }}
+      FRONTEND_RESULT: ${{ needs.frontend.result }}
+      GO_FORMAT_RESULT: ${{ needs.go-format.result }}
+      GO_BACKEND_RESULT: ${{ needs.go-backend.result }}
+      COMPOSE_RESULT: ${{ needs.compose.result }}
+    steps:
+      - name: Require every check to pass
+        run: |
+          for result in "$WORKFLOWS_RESULT" "$FRONTEND_RESULT" "$GO_FORMAT_RESULT" "$GO_BACKEND_RESULT" "$COMPOSE_RESULT"; do
+            if [[ "$result" != success ]]; then
+              echo 'At least one required CI check failed, was cancelled, or was skipped.'
+              exit 1
+            fi
+          done
