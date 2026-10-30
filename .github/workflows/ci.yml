@@ -123,7 +123,12 @@ jobs:
       - name: Verify selected compiler, linker and CMake
         run: |
           clang++ --version
-          ld.lld --version | grep -E '^LLD 20\.'
+          linker_version=$(ld.lld --version)
+          printf '%s\n' "$linker_version"
+          if ! grep -Eq '(^|[[:space:]])LLD 20[.]' <<< "$linker_version"; then
+            echo 'Expected LLD major version 20.' >&2
+            exit 1
+          fi
           cmake --version
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
@@ -203,12 +208,17 @@ jobs:
           persist-credentials: false
       - name: Validate local deployment with example configuration
         run: |
+          validation_dir=$(mktemp -d)
+          trap 'rm -rf "$validation_dir"' EXIT
+          cp docker/docker-compose.yml docker/docker-compose-base.yml docker/docker-compose.local.yml "$validation_dir/"
+          cp docker/.env.example "$validation_dir/.env"
+          cp docker/.env.local.example "$validation_dir/.env.local"
           docker compose \
-            --env-file docker/.env.example \
-            --env-file docker/.env.local.example \
-            -f docker/docker-compose.yml \
-            -f docker/docker-compose.local.yml \
-            config --no-env-resolution --quiet
+            --env-file "$validation_dir/.env" \
+            --env-file "$validation_dir/.env.local" \
+            -f "$validation_dir/docker-compose.yml" \
+            -f "$validation_dir/docker-compose.local.yml" \
+            config --quiet
 
   ci:
     name: CI

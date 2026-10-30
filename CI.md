@@ -18,6 +18,11 @@ are required. Actions are pinned to release commit SHAs.
 | Docker Compose configuration | Resolve and validate the local deployment using checked-in example environment files, without reading real credentials or starting services. |
 | CI | Requires every job above to succeed. |
 
+Compose validation runs on temporary copies of the three Compose files, with
+`.env` and `.env.local` populated from their checked-in examples. This satisfies
+service-level `env_file` references on a clean runner and never overwrites or
+reads a developer's local credentials.
+
 Frontend checks run independently so a type error does not prevent the build,
 lint or test job from reporting its own result. Failures are blocking: no checks
 are marked `continue-on-error`, and no packages or failing tests are excluded.
