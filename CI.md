@@ -54,6 +54,29 @@ After pushing the workflow and allowing its first run, configure the repository'
 branch protection or ruleset to require the check named **CI** before merging.
 Workflow files cannot enforce branch protection by themselves.
 
+## Local frontend checks
+
+Before pushing, run from the repository root:
+
+```bash
+npm --prefix web run check
+```
+
+This runs the same frontend type, formatting and lint checks used by CI, stopping
+at the first failure. It reports problems without changing files. For type errors
+only, use `npm --prefix web run type-check`. While editing, keep continuous type
+checking running in a separate terminal:
+
+```bash
+npm --prefix web run type-check:watch
+```
+
+These commands use the existing Node/npm dependencies in `web/node_modules`; on
+a fresh checkout, install them with `npm --prefix web ci`. They need no Go,
+native libraries or additional Homebrew packages. Development and production
+builds do not replace type checking. Existing type errors must be fixed before
+the check will pass; this command does not install a Git hook or run tests/builds.
+
 ## Local workflow validation
 
 ```bash

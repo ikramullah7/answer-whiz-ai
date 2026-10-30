@@ -7,7 +7,7 @@ function createMockContainer({ atBottom = true } = {}) {
   const scrollTop = atBottom ? 100 : 0;
   const clientHeight = 100;
   const scrollHeight = 200;
-  const listeners = {};
+  const listeners: Record<string, () => void> = {};
   return {
     current: {
       scrollTop,
@@ -58,13 +58,16 @@ describe('useScrollToBottom', () => {
 
     function useTestScrollToBottom(messages: any, containerRef: any) {
       const hook = useScrollToBottom(messages, containerRef);
-      hook.scrollRef.current = { scrollIntoView: mockScroll } as any;
+      Object.defineProperty(hook.scrollRef, 'current', {
+        value: { scrollIntoView: mockScroll },
+        configurable: true,
+      });
       return hook;
     }
 
     const { rerender } = renderHook(
       ({ messages }) => useTestScrollToBottom(messages, containerRef),
-      { initialProps: { messages: [] } },
+      { initialProps: { messages: [] as string[] } },
     );
 
     rerender({ messages: ['msg1'] });
@@ -79,14 +82,17 @@ describe('useScrollToBottom', () => {
 
     function useTestScrollToBottom(messages: any, containerRef: any) {
       const hook = useScrollToBottom(messages, containerRef);
-      hook.scrollRef.current = { scrollIntoView: mockScroll } as any;
+      Object.defineProperty(hook.scrollRef, 'current', {
+        value: { scrollIntoView: mockScroll },
+        configurable: true,
+      });
       console.log('HOOK: isAtBottom:', hook.isAtBottom);
       return hook;
     }
 
     const { result, rerender } = renderHook(
       ({ messages }) => useTestScrollToBottom(messages, containerRef),
-      { initialProps: { messages: [] } },
+      { initialProps: { messages: [] as string[] } },
     );
 
     // Simulate user scrolls up before messages change
