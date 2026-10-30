@@ -391,6 +391,23 @@
     letter-spacing: -0.055em;
     white-space: nowrap;
   }
+  .sourcepi-brand {
+    color: rgb(var(--text-primary));
+    vertical-align: middle;
+  }
+  .sourcepi-brand-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+  .sourcepi-brand-ai {
+    color: rgb(var(--accent-primary));
+  }
+  .sourcepi-brand-embed .sourcepi-brand-icon {
+    width: 32px;
+    height: 32px;
+  }
   .aw-new-chat {
     display: flex;
     align-items: center;
@@ -831,9 +848,12 @@
       font-size: 17px;
       gap: 7px;
     }
-    .aw-wordmark > svg {
-      width: 25px;
-      height: 25px;
+    .sourcepi-brand-icon {
+      width: 32px;
+      height: 32px;
+    }
+    .sourcepi-brand-embed .sourcepi-brand-name {
+      display: none;
     }
     .aw-sidebar > .aw-new-chat,
     .aw-desktop-navigation,
@@ -1076,10 +1096,5 @@
 @layer components {
   .aw-workspace-lists > :only-child {
     grid-column: 1 / -1;
-  }
-  @media (max-width: 359px) {
-    .aw-sidebar .aw-wordmark > svg {
-      display: none;
-    }
   }
 }

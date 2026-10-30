@@ -1,5 +1,6 @@
 import SvgIcon from '@/components/svg-icon';
 import { PixelMark, PixelPattern } from '@/components/pixel-mark';
+import { BrandLogo } from '@/components/brand-logo';
 import { Button, ButtonLoading } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -337,10 +338,7 @@ export default function Login() {
   return (
     <div className="aw-auth">
       <header className="aw-auth-header">
-        <div className="aw-wordmark">
-          <PixelMark className="text-accent-primary" />
-          <span>SourcePi AI</span>
-        </div>
+        <BrandLogo />
         <ThemeButton />
       </header>
       <main className="aw-auth-layout">

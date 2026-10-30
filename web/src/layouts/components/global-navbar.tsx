@@ -19,7 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { PixelMark } from '@/components/pixel-mark';
+import { BrandLogo } from '@/components/brand-logo';
 import { Routes } from '@/routes';
 
 const MenuItems = [
@@ -142,9 +142,8 @@ export function MobileNavbar() {
         side="left"
         className="aw-mobile-navigation flex w-[min(88vw,18rem)] flex-col p-5"
       >
-        <SheetTitle className="aw-wordmark">
-          <PixelMark />
-          SourcePi AI
+        <SheetTitle>
+          <BrandLogo />
         </SheetTitle>
         <Navigation onNavigate={close} />
       </SheetContent>

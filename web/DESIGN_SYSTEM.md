@@ -4,6 +4,12 @@ The design tokens live in `tailwind.css`. Reuse them rather than introducing
 screen-specific palettes or type scales. The bundled Inter family is used for
 navigation, forms, headings, answers and document metadata; code keeps monospace.
 
+Use `BrandLogo` for the product signature. The approved mark combines a dark
+magnifier, forest-green pixel pi and orange accents. The wordmark keeps SourcePi
+in the primary text colour and AI in the accent colour. Dark mode uses the light
+mark variant. `public/logo.svg` is the icon and favicon; `logo-dark.svg` is its
+dark-mode counterpart. Feature-card pixel motifs remain separate from branding.
+
 | Role | Size | Treatment |
 | --- | --- | --- |
 | Workspace hero | 40–72px, responsive | Bold, compact line height |

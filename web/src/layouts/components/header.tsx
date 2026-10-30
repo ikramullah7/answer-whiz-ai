@@ -1,5 +1,5 @@
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
-import { PixelMark } from '@/components/pixel-mark';
+import { BrandLogo } from '@/components/brand-logo';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -55,9 +55,8 @@ export function Header() {
         <div className="aw-mobile-menu">
           <MobileNavbar />
         </div>
-        <Link to={Routes.Root} className="aw-wordmark">
-          <PixelMark className="text-accent-primary" />
-          <span>SourcePi AI</span>
+        <Link to={Routes.Root}>
+          <BrandLogo />
         </Link>
       </div>
       <Link to={Routes.Root} className="aw-new-chat">
