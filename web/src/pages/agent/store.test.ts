@@ -251,9 +251,7 @@ describe('useGraphStore.toggleBottomCollapse', () => {
 
     useGraphStore.setState({ nodes, edges });
 
-    useGraphStore
-      .getState()
-      .toggleBottomCollapse('agent:0', NodeHandleId.Tool);
+    useGraphStore.getState().toggleBottomCollapse('agent:0', NodeHandleId.Tool);
 
     let state = useGraphStore.getState();
     // Only the tool node is hidden; the sub-agent subtree stays visible
@@ -274,9 +272,7 @@ describe('useGraphStore.toggleBottomCollapse', () => {
     ]);
 
     // Expanding one handle keeps the other handle's subtree hidden
-    useGraphStore
-      .getState()
-      .toggleBottomCollapse('agent:0', NodeHandleId.Tool);
+    useGraphStore.getState().toggleBottomCollapse('agent:0', NodeHandleId.Tool);
 
     state = useGraphStore.getState();
     expect(hiddenIds(state.nodes)).toEqual(['agent:1', 'tool:1']);
